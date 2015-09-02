@@ -1,6 +1,6 @@
 'use strict';
 angular.module('w11k.angular-seo-header', []);
-angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$compile', '$interpolate',
+angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$compile',
     function($rootScope, $compile) {
         var  html ='<title ng-if="head.title">{{head.title}}</title>' +
             '<meta name="keywords" content="{{head.keywords}}" ng-if="head.keywords">' +
@@ -12,7 +12,7 @@ angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$com
             link: function(scope, elem) {
                 elem.append($compile(html)(scope));
                 scope.head = {};
-                $rootScope.$on('$stateChangeStart', function (event, toState) { //fromParams
+                $rootScope.$on('$stateChangeStart', function (event, toState,toParams) { //fromParams
                     if(toState.data.head){
                         scope.head = {
                             title: toState.data.head.title,
@@ -24,6 +24,13 @@ angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$com
                     } else {
                         scope.head = {};
                     }
+                    if(toState.data.head.canonicalExtend){              // extend function is defined
+                        scope.head.canonical= toState.data.head.canonicalExtend(scope.head.canonical, toParams);
+                    }
+                    if(toState.data.head.titleExtend){              // extend function is defined
+                        scope.head.title = toState.data.head.titleExtend(scope.head.title, toParams);
+                    }
+
                 });
             }};
     }
