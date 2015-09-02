@@ -57,6 +57,14 @@ just leave the array empty
 
 nothing, it will work. meta tags wont be displayed
 
+***i have urls with parameters***
+you **must** add the paramters to the canonical tag in order to get the right urls. you can use a function for that and inject $stateParams to return the result.
+
+     canonical:(function($stateParams) {
+        return 'https://www.myDomain.tld/route/' + $stateParams.myParam;
+     })();
+
+
 
 ## canonical Tags
 you should use them since they help google to render your javascript site without any html snapshots needed. but watch our, wrong canonical tags could exclude your site from googles index.
