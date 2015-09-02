@@ -1,0 +1,24 @@
+{
+  "name": "w11k.angular-seo-header",
+  "version": "0.1.0",
+  "description": "Angular-SEO-Header takes care of meta tags, canonicals, keywords, robots tags with ui-router",
+  "main": "angular-seo-header.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "tbd"
+  },
+  "keywords": [
+    "angularjs",
+    "seo",
+    "urls",
+    "meta",
+    "canonical",
+    "meta",
+    "description"
+  ],
+  "author": "Can Kattw <ck115@hdm-stuttgart.de>",
+  "license": "MIT"
+}
