@@ -16,25 +16,42 @@ angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$com
 
                 $rootScope.$on('$stateChangeStart', function (event, toState,toParams) {
                     if(toState.data.head){
+                        // head data are available for upcoming view, directive jumps in:
+
                         var canonical,
-                            title;
+                            title,
+                            description,
+                            keywords;
 
                         if(toState.data.head.canonicalExtend){              // extend function is defined
-                            canonical= toState.data.head.canonicalExtend(scope.head.canonical, toParams);
+                            canonical= toState.data.head.canonicalExtend(toState.data.head.canonical, toParams);
                         } else {
-                            canonical =  toState.data.head.canonical
+                            canonical =  toState.data.head.canonical;
                         }
 
                         if(toState.data.head.titleExtend){              // extend function is defined
-                            title = toState.data.head.titleExtend(scope.head.title, toParams);
+                            title = toState.data.head.titleExtend(toState.data.head.title, toParams);
                         } else {
                             title = toState.data.head.title;
                         }
 
+                        if(toState.data.head.descriptionExtend){              // extend function is defined
+                            description = toState.data.head.descriptionExtend(toState.data.head.description, toParams);
+                        } else {
+                            description = toState.data.head.description;
+                        }
+
+                        if(toState.data.head.keywordsExtend){              // extend function is defined
+                            keywords = toState.data.head.keywordsExtend(toState.data.head.keywords, toParams);
+                        } else {
+                            keywords = toState.data.head.keywords;
+                        }
+
+
                         scope.head = {
                             title: title,
-                            keywords:  toState.data.head.keywords ? toState.data.head.keywords.join(',')  : false,
-                            description:toState.data.head.description,
+                            keywords:  keywords ? keywords.join(',')  : false,
+                            description:description,
                             robots:toState.data.head.robots,
                             canonical:canonical
                         };
