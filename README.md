@@ -84,3 +84,32 @@ you should use them since they help google to render your javascript site withou
 2. improve crawlability without having to prerender your site into html snapshots
 3. url rearrangement in order to get rid of the #! (you need the hashbang for legacy browsers! so **dont use 301 redirect** but the canonical to tell google which version is the right one)
 4. ..
+
+
+### use parameter in canonical tags OR use parameter in title tags
+to inject the parameters in the canonical tags you need to create a canonicalExtend (name must match exact) function in your config. the direktive will check whether it is available and use it instead of the tag.
+the function will receive two parameters from the direktive, first the string you entered as canonical tag, as second parameter the toParams from $stateChange event are received.
+From here you can create your custom mapping function and either map the parameters to readable strings or just chain them to the string. this method will work for title tag and canonical tag.
+
+**example config with canonicalExtend and titleExtend function**
+
+
+    module.config(function($stateProvider) {
+    $stateProvider
+        .state('route', {
+          url: '/route/:param1',
+          data: {
+              head: {
+                  title: 'My View Page-Title',
+                  keywords: ['keyword 1', 'keyword 2'],
+                  description: 'Meta Description for View',
+                  robots: 'index,follow',
+                  canonical: 'https://www.domain.tld/#!/route/',
+                  canonicalExtend: function (canonicalStr, toParams) {
+                      return canonicalStr+toParams.param1;
+                  },
+                  titleExtend: function(titleStr, toParams){
+                  return titleStr + capitalizeFirstLetter(toParams.param1);
+                  }
+              }
+          },
