@@ -10,27 +10,38 @@ angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$com
         return {
             restrict: 'E',
             link: function(scope, elem) {
+
                 elem.append($compile(html)(scope));
                 scope.head = {};
-                $rootScope.$on('$stateChangeStart', function (event, toState,toParams) { //fromParams
+
+                $rootScope.$on('$stateChangeStart', function (event, toState,toParams) {
                     if(toState.data.head){
+                        var canonical,
+                            title;
+
+                        if(toState.data.head.canonicalExtend){              // extend function is defined
+                            canonical= toState.data.head.canonicalExtend(scope.head.canonical, toParams);
+                        } else {
+                            canonical =  toState.data.head.canonical
+                        }
+
+                        if(toState.data.head.titleExtend){              // extend function is defined
+                            title = toState.data.head.titleExtend(scope.head.title, toParams);
+                        } else {
+                            title = toState.data.head.title;
+                        }
+
                         scope.head = {
-                            title: toState.data.head.title,
+                            title: title,
                             keywords:  toState.data.head.keywords ? toState.data.head.keywords.join(',')  : false,
                             description:toState.data.head.description,
                             robots:toState.data.head.robots,
-                            canonical:toState.data.head.canonical
+                            canonical:canonical
                         };
+
                     } else {
                         scope.head = {};
                     }
-                    if(toState.data.head.canonicalExtend){              // extend function is defined
-                        scope.head.canonical= toState.data.head.canonicalExtend(scope.head.canonical, toParams);
-                    }
-                    if(toState.data.head.titleExtend){              // extend function is defined
-                        scope.head.title = toState.data.head.titleExtend(scope.head.title, toParams);
-                    }
-
                 });
             }};
     }
