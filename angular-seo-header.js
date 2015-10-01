@@ -15,7 +15,7 @@ angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$com
                 scope.head = {};
 
                 $rootScope.$on('$stateChangeStart', function (event, toState,toParams) {
-                    if(toState.data.head){
+                    if(toState.data && toState.data.head){
                         // head data are available for upcoming view, directive jumps in:
 
                         var canonical,
