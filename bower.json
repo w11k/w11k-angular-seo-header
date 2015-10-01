@@ -17,6 +17,9 @@
     "seo",
     "urls"
   ],
+  "dependencies": {
+    "angular": ">=1.3.0"
+  },
   "license": "MIT",
   "homepage": "www.w11k.de",
   "ignore": [
