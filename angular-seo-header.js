@@ -6,7 +6,8 @@ angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$com
             '<meta name="keywords" content="{{head.keywords}}" ng-if="head.keywords">' +
             '<meta name="description" content="{{head.description}}" ng-if="head.description">' +
             '<meta name="robots" content="{{head.robots}}" ng-if="head.robots">' +
-            '<link rel="canonical" href="{{head.canonical}}" ng-if="head.canonical"/>';
+            '<link rel="canonical" href="{{head.canonical}}" ng-if="head.canonical"/>' +
+            '<link rel="alternate" ng-repeat="(lang, href) in head.hreflangs" href="{{href}}" hreflang="{{lang}}"/>';
         return {
             restrict: 'E',
             link: function(scope, elem) {
@@ -21,7 +22,8 @@ angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$com
                         var canonical,
                             title,
                             description,
-                            keywords;
+                            keywords,
+                            hreflangs;
 
                         if(toState.data.head.canonicalExtend){              // extend function is defined
                             canonical= toState.data.head.canonicalExtend(toState.data.head.canonical, toParams);
@@ -47,13 +49,20 @@ angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$com
                             keywords = toState.data.head.keywords;
                         }
 
+                        if(toState.data.head.hreflangsExtend){              // extend function is defined
+                            hreflangs = toState.data.head.hreflangsExtend(toState.data.head.hreflangs, toParams);
+                        } else {
+                            hreflangs = toState.data.head.hreflangs;
+                        }
+
 
                         scope.head = {
                             title: title,
                             keywords:  keywords ? keywords.join(',')  : false,
                             description:description,
                             robots:toState.data.head.robots,
-                            canonical:canonical
+                            canonical:canonical,
+                            hreflangs: hreflangs
                         };
 
                     } else {
